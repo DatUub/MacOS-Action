@@ -1,4 +1,4 @@
-name: macOS Build
+name: Build Clicker
 
 on:
   push:
@@ -10,26 +10,19 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
-
+    runs-on: macos-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-
-      - name: Compile and build
-        run: |
-          export JAVA_HOME=$JAVA_HOME
-          clang++ -c -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/darwin" Clicker.cpp -o Clicker.o
-          clang++ -dynamiclib -fPIC -o libclicker.dylib Clicker.o -framework ApplicationServices
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: libclicker
-          path: libclicker.dylib
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    
+    - name: Compile and build
+      run: |
+        export JAVA_HOME=$JAVA_HOME
+        clang++ -c -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/darwin" -std=c++17 Clicker.cpp -o Clicker.o
+        clang++ -dynamiclib -fPIC -o libclicker.dylib Clicker.o -framework ApplicationServices
