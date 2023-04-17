@@ -1,4 +1,4 @@
-```#include <jni.h>
+#include <jni.h>
 #include <iostream>
 
 #ifdef _WIN32
@@ -26,4 +26,4 @@ JNIEXPORT void JNICALL Java_Clicker_click(JNIEnv* env, jclass) {
     CGEventPost(kCGHIDEventTap, click);
     CFRelease(click);
 #endif
-}```
+}
